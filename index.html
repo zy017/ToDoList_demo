@@ -3,113 +3,10 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+        <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/todo.css">
         <title>ToDoList</title>
         <style>
-            body {
-                font-family: 'Yahei', Arial, sans-serif;
-                background: rgb(205, 205, 205);
-                padding: 0;
-                margin: 0;
-            }
-
-            header {
-                background: #333;
-            }
-
-            header h2{
-                width: 65%;
-                color: white;
-                padding: 10px;
-                margin: 0 auto;
-                margin-bottom: 20px;
-            }
-
-            #id-todo-container {
-                margin: 0 auto;
-                width: 65%;
-            }
-
-            #id-div-container h3 {
-                font-size: 1.5em;
-            }
-
-            .todo-form {
-                display: flex;
-                justify-content: flex-end;
-            }
-
-            #id-input-todo {
-                background: white;
-                padding: 5px;
-                border: none;
-                outline: none;
-                border-radius: 5px;
-                height: 25px;
-            }
-
-            #id-button-add {
-                background: rgba(0, 43, 54, 0.3);
-                height: 35px;
-                padding: 0 12px;
-                margin-left: 15px;
-                vertical-align: middle;
-                border: none;
-                outline: none;
-                border-radius: 5px;
-            }
-
-            ol {
-                padding-left: 5px;
-            }
-
-            .todo-cell {
-                border-radius: 5px;
-            }
-
-            .todo-cell .time {
-                color: black;
-                font-weight: normal;
-                font-size: 0.9em;
-                padding-left: 10px;
-                border-radius: 5px;
-
-            }
-
-            .todo-cell .todo-p {
-                background: white;
-                font-size: 1.2em;
-                height: 50px;
-                line-height: 50px;
-                margin: 0px;
-                padding: 0px;
-                padding-left: 10px;
-                border-radius: 5px;
-            }
-
-            .todo-done {
-                width: 18px;
-                height: 18px;
-                vertical-align: middle;
-            }
-
-            .done {
-                color: gray;
-                opacity: 0.5;
-            }
-
-            .todo-delete {
-                font-size: 0.8em;
-                padding: 0 10px;
-                height: 50px;
-                border: none;
-                outline: none;
-                float: right;
-                border-radius: 5px;
-                background: #FF7F50;
-                vertical-align: middle;
-            }
-
         </style>
     </head>
     <body>
@@ -119,7 +16,7 @@
         <section id="id-todo-container">
             <div class="todo-form">
                 <input id="id-input-todo" type="text" placeholder="添加ToDo">
-                <button id="id-button-add" type="button">添加</button>
+                <i id="id-button-add" class="fa fa-plus" aria-hidden="true"></i>
             </div>
             <div id="id-div-container">
                 <h3>正在进行</h3>
@@ -152,12 +49,13 @@
                 day = ch[i]
                 var t = `
                     <li id=${todo.id} class="todo-cell ${done}">
-                        <h5 class="time">创建日期：${time} 星期${day}
-                        </h5>
+                        <span class="time">创建日期：${time} 星期${day}
+                        </span>
                         <div class="todo-p">
                         <input class="todo-done" type="checkbox" ${checked}>
-                        <span class="todo-task" contenteditable="true">${todo.task}</span>
-                        <button class="todo-delete">删除</button>
+                        <i class="fa fa-edit todo-edit" aria-hidden="true"></i>
+                        <i class="fa fa-times todo-delete" aria-hidden="true"></i>
+                        <span class="todo-task">${todo.task}</span>
                         </div>
                     </li>
                 `
@@ -292,11 +190,12 @@
             var bindEventEdit = () => {
                 // 绑定 edit 按钮的事件委托
                 var container = e('#id-todo-container')
-                container.addEventListener('dblclick', (event) => {
+                container.addEventListener('click', (event) => {
                     var self = event.target
-                    if (self.classList.contains('todo-task')) {
-                        self.contentEditable = true
-                        self.focus()
+                    if (self.classList.contains('todo-edit')) {
+                        var task = e('.todo-task')
+                        task.contentEditable = true
+                        task.focus()
                     }
                 })
             }
@@ -319,7 +218,6 @@
                     }
                 })
             }
-
 
             var bindEvents = () => {
                 bindEventEdit()
